@@ -110,9 +110,9 @@ Run `npm run bench` to reproduce.
 
 | Scenario | Description | p50 (ms) | p95 (ms) |
 | :--- | :--- | :---: | :---: |
-| **Small** | Auto version/mask, ecc M ("HELLO WORLD") | **0.066** | **0.138** |
-| **Medium** | Auto version/mask, ecc M (~500 bytes URL‑ish payload) | **1.262** | **1.403** |
-| **Large** | Auto version/mask, ecc L (3000 bytes) | **3.849** | **3.984** |
+| **Small** | Auto version/mask, ecc M ("HELLO WORLD") | **0.074** | **0.138** |
+| **Medium** | Auto version/mask, ecc M (~500 bytes URL‑ish payload) | **1.275** | **1.527** |
+| **Large** | Auto version/mask, ecc L (3000 bytes) | **4.082** | **4.536** |
 
 > Benchmarks captured on 2026‑01‑31 with Node v24.7.0 (darwin arm64). Goal from RFC: version‑40 near‑capacity with auto‑mask < 5ms — **met**.
 

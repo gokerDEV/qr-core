@@ -159,7 +159,7 @@ export function writeFormatInformation(
 	const size = matrix.size;
 
 	for (let i = 0; i < 15; i++) {
-		const bit = (formatBits >>> i) & 1;
+		const bit = (formatBits >>> (14 - i)) & 1;
 
 		// Top-left
 		let x: number;
@@ -185,6 +185,7 @@ export function writeFormatInformation(
 		if (i < 8) {
 			x2 = 8;
 			y2 = size - 1 - i;
+			if (y2 === size - 8) continue; // skip dark module
 		} else {
 			x2 = size - 15 + i;
 			y2 = 8;

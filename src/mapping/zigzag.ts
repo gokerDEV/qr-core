@@ -8,10 +8,11 @@ export function zigzag(matrix: Matrix, data: Uint8Array): void {
 	let bitIndex = 0;
 	const totalBits = data.length * 8;
 
-	for (let right = size - 1; right > 0; right -= 2) {
+	const last = size - 1;
+	for (let right = last, pairIndex = 0; right > 0; right -= 2, pairIndex++) {
 		if (right === 6) right--;
 
-		const upward = ((right + 1) / 2) % 2 !== 0;
+		const upward = pairIndex % 2 === 0;
 		for (let i = 0; i < size; i++) {
 			const y = upward ? size - 1 - i : i;
 			for (let j = 0; j < 2; j++) {
