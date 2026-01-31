@@ -1,0 +1,45 @@
+{
+  "name": "qr-core",
+  "version": "1.0.0",
+  "description": "Deterministic, zero-dependency QR Code Model 2 encoder (matrix-only)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "lint": "biome check src tests bench",
+    "format": "biome format --write src tests bench",
+    "bench": "npm run build && node dist/bench/bench.js"
+  },
+  "keywords": [
+    "qr",
+    "qrcode",
+    "qr-code",
+    "encoder",
+    "matrix",
+    "typescript",
+    "esm"
+  ],
+  "author": "QR Core Contributors",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
+    "@types/node": "^25.1.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}
