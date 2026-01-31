@@ -21,9 +21,7 @@ export function zigzag(matrix: Matrix, data: Uint8Array): void {
 					const byteIndex = Math.floor(bitIndex / 8);
 					const byte = data[byteIndex];
 					if (byte === undefined)
-						throw new Error(
-							`Internal error: Data missing at index ${byteIndex}`,
-						);
+						throw new Error(`Internal error: Data missing at index ${byteIndex}`);
 
 					const bit = (byte >>> (7 - (bitIndex % 8))) & 1;
 					matrix.set(x, y, bit === 1);

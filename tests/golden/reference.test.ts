@@ -23,9 +23,7 @@ function compareMatrices(
 	}
 
 	if (mismatches.length > 0) {
-		const details = mismatches
-			.map((m) => `(${m.x},${m.y}) ${m.a}!=${m.b}`)
-			.join(", ");
+		const details = mismatches.map((m) => `(${m.x},${m.y}) ${m.a}!=${m.b}`).join(", ");
 		throw new Error(`Matrix mismatch for ${name}: ${details}`);
 	}
 }
@@ -36,14 +34,7 @@ describe("Reference matrix match (nayuki qrcodegen)", () => {
 		const ours = encode(input, { ecc: "M", version: 3, mask: 2, mode: "alphanumeric" });
 
 		const seg = qrcodegen.QrSegment.makeAlphanumeric(input);
-		const ref = qrcodegen.QrCode.encodeSegments(
-			[seg],
-			qrcodegen.QrCode.Ecc.MEDIUM,
-			3,
-			3,
-			2,
-			false,
-		);
+		const ref = qrcodegen.QrCode.encodeSegments([seg], qrcodegen.QrCode.Ecc.MEDIUM, 3, 3, 2, false);
 
 		const refModules = {
 			size: ref.size,

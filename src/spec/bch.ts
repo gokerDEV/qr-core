@@ -5,10 +5,7 @@
 /**
  * Format Info BCH (15, 5)
  */
-export function getFormatInfo(
-	eccLevel: "L" | "M" | "Q" | "H",
-	mask: number,
-): number {
+export function getFormatInfo(eccLevel: "L" | "M" | "Q" | "H", mask: number): number {
 	const eccBits: Record<string, number> = { L: 1, M: 0, Q: 3, H: 2 };
 	const bits = eccBits[eccLevel];
 	if (bits === undefined) throw new Error(`Invalid ecc level: ${eccLevel}`);

@@ -42,9 +42,7 @@ export function mul(a: number, b: number): number {
 	// expIndex max 508. EXP size 512.
 	const result = EXP[expIndex];
 	if (result === undefined) {
-		throw new Error(
-			`Internal GF error: EXP table underflow/overflow at index ${expIndex}`,
-		);
+		throw new Error(`Internal GF error: EXP table underflow/overflow at index ${expIndex}`);
 	}
 	return result;
 }
@@ -52,8 +50,7 @@ export function mul(a: number, b: number): number {
 export function inv(n: number): number {
 	if (n === 0) throw new Error("Division by zero");
 	const logN = LOG[n];
-	if (logN === undefined)
-		throw new Error(`Invalid input for GF inversion: ${n}`);
+	if (logN === undefined) throw new Error(`Invalid input for GF inversion: ${n}`);
 
 	return EXP[255 - logN] ?? 0; // Fallback 0 should essentially never happen given table construction
 }

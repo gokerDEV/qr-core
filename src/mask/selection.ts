@@ -40,11 +40,7 @@ export function selectAndApplyBestMask(
 	return { mask: bestMask, penalties };
 }
 
-function evaluateMask(
-	workMatrix: Matrix,
-	ecc: EccLevel,
-	maskId: MaskId,
-): number {
+function evaluateMask(workMatrix: Matrix, ecc: EccLevel, maskId: MaskId): number {
 	// workMatrix is already a copy/reset
 	applyMask(workMatrix, maskId);
 	writeFormatInformation(workMatrix, ecc, maskId);
@@ -141,8 +137,7 @@ export function applyMask(matrix: Matrix, maskId: MaskId): void {
 					const idx = y * size + x;
 					const val = data[idx] ?? 0;
 					if (!(val & 2)) {
-						if (((((x + y) & 1) + ((x * y) % 3)) & 1) === 0)
-							data[idx] = val ^ 1;
+						if (((((x + y) & 1) + ((x * y) % 3)) & 1) === 0) data[idx] = val ^ 1;
 					}
 				}
 			}
@@ -150,11 +145,7 @@ export function applyMask(matrix: Matrix, maskId: MaskId): void {
 	}
 }
 
-export function writeFormatInformation(
-	matrix: Matrix,
-	ecc: EccLevel,
-	maskId: MaskId,
-): void {
+export function writeFormatInformation(matrix: Matrix, ecc: EccLevel, maskId: MaskId): void {
 	const formatBits = getFormatInfo(ecc, maskId);
 	const size = matrix.size;
 

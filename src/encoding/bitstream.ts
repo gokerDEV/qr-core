@@ -12,11 +12,7 @@ import type { Segment } from "./segmentation.js";
 /**
  * Combines encoded segments and applies padding to create the final data bitstream.
  */
-export function buildBitstream(
-	segments: Segment[],
-	version: number,
-	ecc: EccLevel,
-): BitBuffer {
+export function buildBitstream(segments: Segment[], version: number, ecc: EccLevel): BitBuffer {
 	const buffer = new BitBuffer();
 	const groupIdx = getVersionGroupIndex(version);
 
@@ -30,9 +26,7 @@ export function buildBitstream(
 		const charCount = segment.count;
 		const maxCount = (1 << charCountBits) - 1;
 		if (charCount > maxCount) {
-			throw new Error(
-				`Segment too long for mode ${segment.mode} at version ${version}`,
-			);
+			throw new Error(`Segment too long for mode ${segment.mode} at version ${version}`);
 		}
 		buffer.put(charCount, charCountBits);
 

@@ -33,16 +33,14 @@ export function encodeAlphanumeric(data: string, buffer: BitBuffer): void {
 		const char1 = ALPHANUMERIC_CHARSET.indexOf(char1Str);
 		const char2 = ALPHANUMERIC_CHARSET.indexOf(char2Str);
 
-		if (char1 === -1 || char2 === -1)
-			throw new Error("Encoding error: Invalid character");
+		if (char1 === -1 || char2 === -1) throw new Error("Encoding error: Invalid character");
 
 		buffer.put(char1 * 45 + char2, 11);
 		i += 2;
 	}
 	if (data.length - i === 1) {
 		const char1Str = data[i];
-		if (char1Str === undefined)
-			throw new Error("Encoding error: Index out of bounds");
+		if (char1Str === undefined) throw new Error("Encoding error: Index out of bounds");
 
 		const char1 = ALPHANUMERIC_CHARSET.indexOf(char1Str);
 		if (char1 === -1) throw new Error("Encoding error: Invalid character");
@@ -55,8 +53,7 @@ export function encodeAlphanumeric(data: string, buffer: BitBuffer): void {
  * Byte Mode: UTF-8 (Default)
  */
 export function encodeByte(data: string | Uint8Array, buffer: BitBuffer): void {
-	const bytes =
-		typeof data === "string" ? new TextEncoder().encode(data) : data;
+	const bytes = typeof data === "string" ? new TextEncoder().encode(data) : data;
 	for (const byte of bytes) {
 		buffer.put(byte, 8);
 	}

@@ -5,11 +5,7 @@ import type { EccLevel } from "../types/index.js";
 /**
  * Splits data into blocks and interleaves them with ECC codewords.
  */
-export function interleave(
-	data: Uint8Array,
-	version: number,
-	ecc: EccLevel,
-): Uint8Array {
+export function interleave(data: Uint8Array, version: number, ecc: EccLevel): Uint8Array {
 	const spec = ECC_TABLE[version]?.[ecc];
 	if (!spec) throw new Error(`Invalid version/ECC: ${version}/${ecc}`);
 
@@ -50,8 +46,7 @@ export function interleave(
 	for (let i = 0; i < spec.eccPerBlock; i++) {
 		for (const block of eccBlocks) {
 			const val = block[i];
-			if (val === undefined)
-				throw new Error("Internal error: ECC block shorter than expected");
+			if (val === undefined) throw new Error("Internal error: ECC block shorter than expected");
 			result[resOffset++] = val;
 		}
 	}

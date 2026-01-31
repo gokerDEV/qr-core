@@ -41,8 +41,7 @@ export function getVersionGroupIndex(version: number): 0 | 1 | 2 {
 /**
  * Alphanumeric character set mapping
  */
-export const ALPHANUMERIC_CHARSET =
-	"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+export const ALPHANUMERIC_CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
 
 /**
  * ECC Codeword tables, Alignment pattern positions, etc. will go here or in sub-files.

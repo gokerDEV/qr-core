@@ -25,10 +25,7 @@ import type {
 /**
  * High-level API to encode data into a QrCode structure.
  */
-export function encode(
-	input: string | Uint8Array,
-	options: EncodeOptions = {},
-): QrCode {
+export function encode(input: string | Uint8Array, options: EncodeOptions = {}): QrCode {
 	const ecc = options.ecc ?? "M";
 	const quietZone = options.quietZone ?? 4;
 	const isStrict = options.strict ?? true;
@@ -41,10 +38,7 @@ export function encode(
 	if (typeof input === "string") {
 		if (options.mode && options.mode !== "auto") {
 			if (options.mode === "numeric" && !isNumeric(input)) {
-				throw new QrException(
-					"UNSUPPORTED_MODE",
-					"Input is not representable in numeric mode.",
-				);
+				throw new QrException("UNSUPPORTED_MODE", "Input is not representable in numeric mode.");
 			}
 			if (options.mode === "alphanumeric" && !isAlphanumeric(input)) {
 				throw new QrException(
@@ -140,8 +134,7 @@ export function encode(
 	if (penalties) {
 		meta.maskPenalties = penalties;
 		const chosen = penalties[maskId];
-		if (chosen === undefined)
-			throw new Error("Internal error: Chosen penalty undefined");
+		if (chosen === undefined) throw new Error("Internal error: Chosen penalty undefined");
 		meta.chosenPenalty = chosen;
 	}
 
@@ -169,11 +162,7 @@ export function encodeSafe(
 			return err(e);
 		}
 		return err(
-			new QrException(
-				"INTERNAL_INVARIANT_BROKEN",
-				e instanceof Error ? e.message : String(e),
-				e,
-			),
+			new QrException("INTERNAL_INVARIANT_BROKEN", e instanceof Error ? e.message : String(e), e),
 		);
 	}
 }
@@ -190,10 +179,7 @@ function validateOptions(
 
 	if (options.version !== undefined && options.version !== "auto") {
 		if (!isIntegerInRange(options.version, 1, 40)) {
-			throw new QrException(
-				"INVALID_VERSION",
-				`Invalid version: ${options.version}`,
-			);
+			throw new QrException("INVALID_VERSION", `Invalid version: ${options.version}`);
 		}
 	}
 
@@ -204,10 +190,7 @@ function validateOptions(
 	}
 
 	if (!isIntegerInRange(quietZone, 0, 64)) {
-		throw new QrException(
-			"INVALID_OPTIONS",
-			`Invalid quietZone: ${quietZone}`,
-		);
+		throw new QrException("INVALID_OPTIONS", `Invalid quietZone: ${quietZone}`);
 	}
 
 	if (charset !== "utf-8" && charset !== "iso-8859-1") {
@@ -215,11 +198,7 @@ function validateOptions(
 	}
 
 	if (options.mode !== undefined && options.mode !== "auto") {
-		if (
-			options.mode !== "numeric" &&
-			options.mode !== "alphanumeric" &&
-			options.mode !== "byte"
-		) {
+		if (options.mode !== "numeric" && options.mode !== "alphanumeric" && options.mode !== "byte") {
 			throw new QrException("INVALID_OPTIONS", `Invalid mode: ${options.mode}`);
 		}
 	}
@@ -255,10 +234,7 @@ function prepareSegments(
 		switch (segment.mode) {
 			case "numeric":
 				if (!isNumeric(segment.data)) {
-					throw new QrException(
-						"UNSUPPORTED_MODE",
-						"Input is not representable in numeric mode.",
-					);
+					throw new QrException("UNSUPPORTED_MODE", "Input is not representable in numeric mode.");
 				}
 				return { ...segment, count: segment.data.length };
 			case "alphanumeric":
@@ -273,6 +249,8 @@ function prepareSegments(
 				const bytes = encodeByteString(segment.data, charset, strict);
 				return { ...segment, bytes, count: bytes.length };
 			}
+			default:
+				throw new QrException("INTERNAL_INVARIANT_BROKEN", `Unknown segment mode: ${segment.mode}`);
 		}
 	});
 }

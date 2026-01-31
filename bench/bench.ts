@@ -31,8 +31,7 @@ async function runBenchmarks() {
 		encode(smallPayload, { ecc: "M" });
 	});
 
-	const mediumPayload =
-		"https://example.com/search?q=" + "A".repeat(480);
+	const mediumPayload = `https://example.com/search?q=${"A".repeat(480)}`;
 	bench("Medium Payload (~500 bytes, auto version/mask, ecc M)", () => {
 		encode(mediumPayload, { ecc: "M" });
 	});

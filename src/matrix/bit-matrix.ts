@@ -98,11 +98,7 @@ export class Matrix implements BitMatrix {
 	public toRows(): ReadonlyArray<Uint8Array> {
 		const rows: Uint8Array[] = [];
 		for (let y = 0; y < this.size; y++) {
-			rows.push(
-				this.data
-					.slice(y * this.size, (y + 1) * this.size)
-					.map((v) => (v & 1) as 0 | 1),
-			);
+			rows.push(this.data.slice(y * this.size, (y + 1) * this.size).map((v) => (v & 1) as 0 | 1));
 		}
 		return rows;
 	}

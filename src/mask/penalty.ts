@@ -139,13 +139,7 @@ export function calculatePenalty(matrix: Matrix): number {
 	return penalty;
 }
 
-function checkRatioScalar(
-	h0: number,
-	h1: number,
-	h2: number,
-	h3: number,
-	h4: number,
-): boolean {
+function checkRatioScalar(h0: number, h1: number, h2: number, h3: number, h4: number): boolean {
 	if (h0 === 0 || h1 === 0 || h2 === 0 || h3 === 0 || h4 === 0) return false;
 
 	const total = h0 + h1 + h2 + h3 + h4;

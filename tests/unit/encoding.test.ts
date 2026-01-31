@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BitBuffer } from "../../src/core/bit-buffer";
-import {
-	encodeAlphanumeric,
-	encodeByte,
-	encodeNumeric,
-} from "../../src/encoding/encoders";
+import { encodeAlphanumeric, encodeByte, encodeNumeric } from "../../src/encoding/encoders";
 import { interleave } from "../../src/encoding/interleave";
 import { segmentize } from "../../src/encoding/segmentation";
 
@@ -55,11 +51,7 @@ describe("Segmentation", () => {
 		// "123" -> numeric
 		// "A" -> switch to Alnum
 		// "123" -> switch to Numeric
-		expect(segments.map((s) => s.mode)).toEqual([
-			"numeric",
-			"alphanumeric",
-			"numeric",
-		]);
+		expect(segments.map((s) => s.mode)).toEqual(["numeric", "alphanumeric", "numeric"]);
 	});
 });
 

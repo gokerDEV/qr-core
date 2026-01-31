@@ -30,15 +30,11 @@ interface VectorCase {
 }
 
 const vectorsDir = path.join(__dirname, "../vectors");
-const vectorFiles = fs
-	.readdirSync(vectorsDir)
-	.filter((f) => f.endsWith(".json"));
+const vectorFiles = fs.readdirSync(vectorsDir).filter((f) => f.endsWith(".json"));
 
 let vectors: VectorCase[] = [];
 for (const file of vectorFiles) {
-	const content = JSON.parse(
-		fs.readFileSync(path.join(vectorsDir, file), "utf-8"),
-	);
+	const content = JSON.parse(fs.readFileSync(path.join(vectorsDir, file), "utf-8"));
 	vectors = vectors.concat(content);
 }
 

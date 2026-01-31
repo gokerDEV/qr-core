@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
 import jsQR from "jsqr";
+import { describe, expect, it } from "vitest";
 import { encode } from "../../src/api/index";
 
 function renderToImageData(

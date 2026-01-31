@@ -15,8 +15,7 @@ function getGeneratorPoly(eccLen: number): Uint8Array {
 
 	for (let i = 0; i < eccLen; i++) {
 		const root = EXP[i];
-		if (root === undefined)
-			throw new Error("Internal error: EXP lookup failed");
+		if (root === undefined) throw new Error("Internal error: EXP lookup failed");
 
 		// Multiply poly by (x + root)
 		// Coeffs shift: new_coeff[j] = coeff[j] ^ (coeff[j-1] * root)

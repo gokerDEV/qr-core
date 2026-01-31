@@ -25,8 +25,7 @@ export function segmentize(input: string): Segment[] {
 
 	for (let i = 1; i < input.length; i++) {
 		const char = input[i];
-		if (char === undefined)
-			throw new Error("Segmentation error: index out of bounds");
+		if (char === undefined) throw new Error("Segmentation error: index out of bounds");
 
 		const charMode = getBestMode(char);
 		if (charMode !== currentMode) {

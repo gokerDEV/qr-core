@@ -1,0 +1,24 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
+  "files": {
+    "ignoreUnknown": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "lineWidth": 100
+  },
+  "overrides": [
+    {
+      "includes": ["tests/third_party/qrcodegen.ts"],
+      "linter": { "enabled": false },
+      "formatter": { "enabled": false }
+    }
+  ]
+}

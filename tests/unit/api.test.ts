@@ -20,9 +20,7 @@ describe("Public API", () => {
 		// "A" * 100 needs version ~4
 		const largeData = "A".repeat(100);
 		// Expect message to contain "Data requires version"
-		expect(() => encode(largeData, { version: 1 })).toThrow(
-			/Data requires version/,
-		);
+		expect(() => encode(largeData, { version: 1 })).toThrow(/Data requires version/);
 	});
 
 	it("should safe encode without throwing", () => {

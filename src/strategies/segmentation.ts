@@ -35,8 +35,7 @@ function estimateCost(segments: Segment[]): number {
 	for (const s of segments) {
 		// Overhead: Mode(4) + Count(var). Use V1 constants (conservative overhead cost).
 		// Numeric: 10, Alpha: 9, Byte: 8
-		if (s.mode === "numeric")
-			bits += 4 + 10 + Math.ceil(s.count / 3) * 10;
+		if (s.mode === "numeric") bits += 4 + 10 + Math.ceil(s.count / 3) * 10;
 		// Alpha: 11 bits per 2 chars. 6 for last.
 		else if (s.mode === "alphanumeric") {
 			const pairs = Math.floor(s.count / 2);
