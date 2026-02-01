@@ -16,7 +16,7 @@
   },
   "overrides": [
     {
-      "includes": ["tests/third_party/qrcodegen.ts"],
+      "includes": ["vendor/qrcodegen.ts"],
       "linter": { "enabled": false },
       "formatter": { "enabled": false }
     }

@@ -24,7 +24,7 @@ function bench(name: string, fn: () => void, iterations = 100) {
 }
 
 async function runBenchmarks() {
-	console.log("Running benchmarks...\n");
+	console.log("Running qr-core benchmarks...\n");
 
 	const smallPayload = "HELLO WORLD";
 	bench("Small Payload (auto version/mask, ecc M)", () => {

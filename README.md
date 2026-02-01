@@ -106,13 +106,20 @@ If `toPacked()` is available, it returns **row-major**, **MSB‑first** bits. Ea
 
 ## Benchmarks
 
-Run `npm run bench` to reproduce.
+Run `npm run bench` to reproduce qr-core numbers.
+Run `npm run compare` to compare qr-core vs Nayuki (this builds a separate compare bundle via `tsconfig.compare.json`).
 
-| Scenario | Description | p50 (ms) | p95 (ms) |
-| :--- | :--- | :---: | :---: |
-| **Small** | Auto version/mask, ecc M ("HELLO WORLD") | **0.074** | **0.138** |
-| **Medium** | Auto version/mask, ecc M (~500 bytes URL‑ish payload) | **1.275** | **1.527** |
-| **Large** | Auto version/mask, ecc L (3000 bytes) | **4.082** | **4.536** |
+Compare scenario details:
+
+- **Small**: input `"HELLO WORLD"`, ecc `M`, auto version/mask.
+- **Medium**: input `https://example.com/search?q=${"A".repeat(480)}`, ecc `M`, auto version/mask.
+- **Large**: input `"A".repeat(3000)`, ecc `L`, auto version/mask.
+
+| Scenario | Description | qr-core p50 (ms) | qr-core p95 (ms) | Nayuki p50 (ms) | Nayuki p95 (ms) |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Small** | Auto version/mask, ecc M ("HELLO WORLD") | **0.069** | **0.123** | **0.237** | **0.329** |
+| **Medium** | Auto version/mask, ecc M (~500 bytes URL‑ish payload) | **1.260** | **1.405** | **4.241** | **4.493** |
+| **Large** | Auto version/mask, ecc L (3000 bytes) | **4.098** | **4.306** | **12.554** | **13.076** |
 
 > Benchmarks captured on 2026‑01‑31 with Node v24.7.0 (darwin arm64). Goal from RFC: version‑40 near‑capacity with auto‑mask < 5ms — **met**.
 

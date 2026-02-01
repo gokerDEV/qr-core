@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "outDir": "./dist-compare",
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "exactOptionalPropertyTypes": false
+  },
+  "include": [
+    "bench/compare.ts",
+    "src/**/*",
+    "vendor/qrcodegen.ts"
+  ]
+}

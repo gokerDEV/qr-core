@@ -1,6 +1,6 @@
 {
   "name": "qr-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Deterministic, zero-dependency QR Code Model 2 encoder (matrix-only)",
   "type": "module",
   "main": "./dist/src/index.js",
@@ -12,14 +12,6 @@
       "default": "./dist/src/index.js"
     }
   },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build",
-    "test": "vitest",
-    "lint": "biome check src tests bench",
-    "format": "biome format --write src tests bench",
-    "bench": "npm run build && node dist/bench/bench.js"
-  },
   "keywords": [
     "qr",
     "qrcode",
@@ -29,7 +21,7 @@
     "typescript",
     "esm"
   ],
-  "author": "QR Core Contributors",
+  "author": "goker <goker@kodkafa.com>",
   "license": "MIT",
   "files": [
     "dist",
@@ -37,6 +29,15 @@
     "LICENSE"
   ],
   "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "lint": "biome check src tests bench",
+    "format": "biome format --write src tests bench",
+    "bench": "npm run build && node dist/bench/bench.js",
+    "compare": "tsc -p tsconfig.compare.json && node dist-compare/bench/compare.js"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",
     "@types/node": "^25.1.0",

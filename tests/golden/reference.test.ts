@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { encode } from "../../src/api/index";
-import { qrcodegen } from "../third_party/qrcodegen";
+import { qrcodegen } from "../../vendor/qrcodegen";
 
 function compareMatrices(
 	name: string,
