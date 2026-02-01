@@ -2,5 +2,5 @@
     "name": "@goker/qr-core",
     "version": "1.0.3",
     "license": "MIT",
-    "exports": "./dist/src/index.js"
+    "exports": "./src/index.ts"
 }
