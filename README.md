@@ -1,6 +1,14 @@
 # qr-core
 
-Deterministic, zero-dependency QR Code Model 2 encoder for TypeScript/JavaScript. Outputs a binary module matrix and metadata only (no rendering), aligned with the project RFC.
+[![npm](https://img.shields.io/npm/v/qr-core?label=npm)](https://www.npmjs.com/package/qr-core)
+[![jsr](https://img.shields.io/jsr/v/@goker/qr-code)](https://jsr.io/@goker/qr-code)
+[![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-support-yellow)](https://www.buymeacoffee.com/goker)
+[![github sponsor](https://img.shields.io/badge/sponsor-github-black)](https://github.com/sponsors/gokerDEV)
+
+Deterministic, zero-dependency QR Code Model 2 encoder for TypeScript/JavaScript. Outputs a binary module matrix and metadata only (no rendering).
+
+RFC: See `RFC.md` for the normative specification.
 
 ## Highlights
 
@@ -147,10 +155,32 @@ Compare (qr-core vs Nayuki)
 
 > Benchmarks captured on 2026‑02‑01 (darwin arm64) with `BENCH_RUNS=3 BENCH_ITERS=200 BENCH_BATCH=5 BENCH_WARMUP=50`. Goal from RFC: version‑40 near‑capacity with auto‑mask < 5ms — **met**.
 
-## Status & Roadmap
+## Contributing
+
+Contributions are welcome. If you plan a larger change, please open an issue first to align on scope.
+
+### Development
+
+```bash
+npm install
+npm test
+```
+
+### Status & Roadmap
 
 - v1 scope: numeric, alphanumeric, byte; versions 1–40; ECC L/M/Q/H; auto version/mask; deterministic output.
 - Non‑goals in v1: rendering, Kanji, ECI, Structured Append, Micro QR.
+- Review notes:
+  - Golden tests currently validate only version/size; matrix hash/bit equality is still missing.
+  - V7+ version info bit placement is only indirectly validated (reservation checks), not byte‑level correctness.
+  - Segmentation cost estimation uses V1 character count sizes; V10+ may choose larger versions than necessary.
+  - Zigzag placement has no explicit “all bits consumed” assertion, so silent data loss is possible if reserved areas are wrong.
+
+### Guidelines
+
+- Keep output deterministic across runtimes.
+- Prefer small, well‑scoped PRs with tests.
+- Preserve strict typing and zero‑dependency policy.
 
 ## License
 

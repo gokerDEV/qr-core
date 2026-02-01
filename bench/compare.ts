@@ -77,24 +77,24 @@ async function runCompare() {
 		input: string;
 		ecc: "L" | "M" | "Q" | "H";
 	}> = [
-			{ name: "Short text", input: "HELLO WORLD", ecc: "M" },
-			{
-				name: "URL (medium)",
-				input: `https://example.com/search?q=${"A".repeat(480)}`,
-				ecc: "M",
-			},
-			{
-				name: "vCard-like",
-				input:
-					"BEGIN:VCARD\nVERSION:3.0\nN:Doe;John;;;\nFN:John Doe\nORG:Example Inc.\nTEL:+1-555-123-4567\nEMAIL:john.doe@example.com\nEND:VCARD",
-				ecc: "Q",
-			},
-			{
-				name: "Large payload",
-				input: "A".repeat(3000),
-				ecc: "L",
-			},
-		];
+		{ name: "Short text", input: "HELLO WORLD", ecc: "M" },
+		{
+			name: "URL (medium)",
+			input: `https://example.com/search?q=${"A".repeat(480)}`,
+			ecc: "M",
+		},
+		{
+			name: "vCard-like",
+			input:
+				"BEGIN:VCARD\nVERSION:3.0\nN:Doe;John;;;\nFN:John Doe\nORG:Example Inc.\nTEL:+1-555-123-4567\nEMAIL:john.doe@example.com\nEND:VCARD",
+			ecc: "Q",
+		},
+		{
+			name: "Large payload",
+			input: "A".repeat(3000),
+			ecc: "L",
+		},
+	];
 
 	for (const p of payloads) {
 		console.log(`${p.name} (ecc ${p.ecc})`);
