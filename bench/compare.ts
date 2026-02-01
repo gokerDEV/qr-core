@@ -1,4 +1,5 @@
 import { encode } from "../src/index.js";
+import { bench } from "./bench.js";
 
 interface NayukiEcc {
 	LOW: unknown;
@@ -33,28 +34,6 @@ async function loadNayuki(): Promise<NayukiNamespace> {
 	const ns = (mod as unknown as { qrcodegen?: NayukiNamespace }).qrcodegen;
 	if (!ns) throw new Error("Nayuki qrcodegen namespace not found");
 	return ns;
-}
-
-function bench(name: string, fn: () => void, iterations = 100) {
-	for (let i = 0; i < 10; i++) fn();
-
-	const times: number[] = [];
-	for (let i = 0; i < iterations; i++) {
-		const start = performance.now();
-		fn();
-		const end = performance.now();
-		times.push(end - start);
-	}
-
-	times.sort((a, b) => a - b);
-	const p50 = times[Math.floor(times.length * 0.5)] || 0;
-	const p95 = times[Math.floor(times.length * 0.95)] || 0;
-	const avg = times.reduce((a, b) => a + b, 0) / times.length;
-
-	console.log(`${name}:`);
-	console.log(`  p50: ${p50.toFixed(3)}ms`);
-	console.log(`  p95: ${p95.toFixed(3)}ms`);
-	console.log(`  avg: ${avg.toFixed(3)}ms`);
 }
 
 function toNayukiEcc(qrcodegen: NayukiNamespace, ecc: "L" | "M" | "Q" | "H") {
@@ -93,25 +72,38 @@ async function runCompare() {
 
 	console.log("Running performance comparison (qr-core vs Nayuki)...\n");
 
-	const smallPayload = "HELLO WORLD";
-	bench("qr-core", () => {
-		encode(smallPayload, { ecc: "M" });
-	});
-	benchNayuki(qrcodegen, smallPayload, { ecc: "M" });
-	console.log("");
+	const payloads: Array<{
+		name: string;
+		input: string;
+		ecc: "L" | "M" | "Q" | "H";
+	}> = [
+			{ name: "Short text", input: "HELLO WORLD", ecc: "M" },
+			{
+				name: "URL (medium)",
+				input: `https://example.com/search?q=${"A".repeat(480)}`,
+				ecc: "M",
+			},
+			{
+				name: "vCard-like",
+				input:
+					"BEGIN:VCARD\nVERSION:3.0\nN:Doe;John;;;\nFN:John Doe\nORG:Example Inc.\nTEL:+1-555-123-4567\nEMAIL:john.doe@example.com\nEND:VCARD",
+				ecc: "Q",
+			},
+			{
+				name: "Large payload",
+				input: "A".repeat(3000),
+				ecc: "L",
+			},
+		];
 
-	const mediumPayload = `https://example.com/search?q=${"A".repeat(480)}`;
-	bench("qr-core", () => {
-		encode(mediumPayload, { ecc: "M" });
-	});
-	benchNayuki(qrcodegen, mediumPayload, { ecc: "M" });
-	console.log("");
-
-	const largePayload = "A".repeat(3000);
-	bench("qr-core", () => {
-		encode(largePayload, { ecc: "L" });
-	});
-	benchNayuki(qrcodegen, largePayload, { ecc: "L" });
+	for (const p of payloads) {
+		console.log(`${p.name} (ecc ${p.ecc})`);
+		bench("  qr-core", () => {
+			encode(p.input, { ecc: p.ecc });
+		});
+		benchNayuki(qrcodegen, p.input, { ecc: p.ecc });
+		console.log("");
+	}
 }
 
 runCompare();

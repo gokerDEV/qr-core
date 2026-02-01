@@ -1,0 +1,6 @@
+{
+    "name": "@goker/qr-core",
+    "version": "1.0.2",
+    "license": "MIT",
+    "exports": "./dist/src/index.js"
+}

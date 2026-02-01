@@ -109,19 +109,43 @@ If `toPacked()` is available, it returns **row-major**, **MSB‑first** bits. Ea
 Run `npm run bench` to reproduce qr-core numbers.
 Run `npm run compare` to compare qr-core vs Nayuki (this builds a separate compare bundle via `tsconfig.compare.json`).
 
+You can tune runtime for quick/slow passes:
+
+```bash
+BENCH_RUNS=3 BENCH_ITERS=200 BENCH_BATCH=5 BENCH_WARMUP=50 npm run bench
+```
+
 Compare scenario details:
 
-- **Small**: input `"HELLO WORLD"`, ecc `M`, auto version/mask.
-- **Medium**: input `https://example.com/search?q=${"A".repeat(480)}`, ecc `M`, auto version/mask.
-- **Large**: input `"A".repeat(3000)`, ecc `L`, auto version/mask.
+- **Short text**: input `"HELLO WORLD"`, ecc `M`, auto version/mask.
+- **URL (medium)**: input `https://example.com/search?q=${"A".repeat(480)}`, ecc `M`, auto version/mask.
+- **vCard-like**: multi-line vCard-ish text, ecc `Q`, auto version/mask.
+- **Large payload**: input `"A".repeat(3000)`, ecc `L`, auto version/mask.
 
-| Scenario | Description | qr-core p50 (ms) | qr-core p95 (ms) | Nayuki p50 (ms) | Nayuki p95 (ms) |
-| :--- | :--- | :---: | :---: | :---: | :---: |
-| **Small** | Auto version/mask, ecc M ("HELLO WORLD") | **0.069** | **0.123** | **0.237** | **0.329** |
-| **Medium** | Auto version/mask, ecc M (~500 bytes URL‑ish payload) | **1.260** | **1.405** | **4.241** | **4.493** |
-| **Large** | Auto version/mask, ecc L (3000 bytes) | **4.098** | **4.306** | **12.554** | **13.076** |
+### Methodology
 
-> Benchmarks captured on 2026‑01‑31 with Node v24.7.0 (darwin arm64). Goal from RFC: version‑40 near‑capacity with auto‑mask < 5ms — **met**.
+The benchmark harness runs a warmup phase, followed by `BENCH_RUNS` measurement cycles. In each cycle, the task is executed `BENCH_ITERS * BENCH_BATCH` times. To minimize noise, garbage collection is forced (if exposed) before each cycle. We report:
+
+- **p50** (median): The median time per operation across runs.
+- **p95**: The 95th percentile time per operation, indicating tail latency.
+
+Bench (qr-core only)
+
+| Runtime | Short text p50 / p95 (ms) | URL (medium) p50 / p95 (ms) | Large payload p50 / p95 (ms) |
+| :--- | :---: | :---: | :---: |
+| **Node v23.11.0** | **0.046 / 0.051** | **1.193 / 1.205** | **3.897 / 3.899** |
+| **Bun v1.3.8** | **0.040 / 0.053** | **1.154 / 1.171** | **3.736 / 3.736** |
+| **Deno v2.6.7** | **0.041 / 0.046** | **1.179 / 1.213** | **3.866 / 3.876** |
+
+Compare (qr-core vs Nayuki)
+
+| Runtime | Short text (qr-core / Nayuki p50) | URL (medium) (qr-core / Nayuki p50) | vCard-like (qr-core / Nayuki p50) | Large payload (qr-core / Nayuki p50) |
+| :--- | :---: | :---: | :---: | :---: |
+| **Node v23.11.0** | **0.041 / 0.211** | **1.181 / 4.034** | **0.485 / 1.566** | **3.908 / 12.070** |
+| **Bun v1.3.8** | **0.040 / 0.190** | **1.155 / 3.900** | **0.467 / 1.317** | **3.753 / 11.902** |
+| **Deno v2.6.7** | **0.040 / 0.205** | **1.204 / 3.957** | **0.489 / 1.530** | **3.898 / 11.952** |
+
+> Benchmarks captured on 2026‑02‑01 (darwin arm64) with `BENCH_RUNS=3 BENCH_ITERS=200 BENCH_BATCH=5 BENCH_WARMUP=50`. Goal from RFC: version‑40 near‑capacity with auto‑mask < 5ms — **met**.
 
 ## Status & Roadmap
 
