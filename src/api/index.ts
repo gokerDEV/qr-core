@@ -25,6 +25,13 @@ import type {
 /**
  * High-level API to encode data into a QrCode structure.
  */
+/**
+ * Encode input into a deterministic QR Code module matrix and metadata.
+ *
+ * @param input String or bytes to encode.
+ * @param options Encoding options (mode, ECC, version, mask, charset, etc.).
+ * @throws QrException when strict validation fails.
+ */
 export function encode(input: string | Uint8Array, options: EncodeOptions = {}): QrCode {
 	const ecc = options.ecc ?? "M";
 	const quietZone = options.quietZone ?? 4;
@@ -150,6 +157,9 @@ export function encode(input: string | Uint8Array, options: EncodeOptions = {}):
 
 /**
  * Safe variant of encode returning a Result object.
+ */
+/**
+ * Safe variant of {@link encode}. Returns a Result instead of throwing.
  */
 export function encodeSafe(
 	input: string | Uint8Array,

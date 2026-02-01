@@ -1,6 +1,6 @@
 {
   "name": "qr-core",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Deterministic, zero-dependency QR Code Model 2 encoder (matrix-only)",
   "type": "module",
   "main": "./dist/src/index.js",

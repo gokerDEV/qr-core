@@ -1,7 +1,7 @@
 # qr-core
 
 [![npm](https://img.shields.io/npm/v/qr-core?label=npm)](https://www.npmjs.com/package/qr-core)
-![JSR Version](https://img.shields.io/jsr/v/%40goker/qr-core)
+[![JSR](https://jsr.io/badges/@goker/qr-core)](https://jsr.io/@goker/qr-core)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-support-yellow)](https://www.buymeacoffee.com/goker)
 [![github sponsor](https://img.shields.io/badge/sponsor-github-black)](https://github.com/sponsors/gokerDEV)
