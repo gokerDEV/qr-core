@@ -51,4 +51,27 @@ describe("Reference matrix match (nayuki qrcodegen)", () => {
 
 		compareMatrices("v3-M mask2 alphanumeric", ours.matrix, refModules);
 	});
+
+	it("v8 M mask 2 byte matches reference", () => {
+		const input = "Vertical and horizontal lines dominate life";
+		const ours = encode(input, { ecc: "M", version: 8, mask: 2, mode: "byte" });
+
+		const seg = qrcodegen.QrSegment.makeBytes(new TextEncoder().encode(input));
+		const ref = qrcodegen.QrCode.encodeSegments([seg], qrcodegen.QrCode.Ecc.MEDIUM, 8, 8, 2, false);
+
+		const refModules = {
+			size: ref.size,
+			data: (() => {
+				const arr: boolean[] = [];
+				for (let y = 0; y < ref.size; y++) {
+					for (let x = 0; x < ref.size; x++) {
+						arr.push(ref.getModule(x, y));
+					}
+				}
+				return arr;
+			})(),
+		};
+
+		compareMatrices("v8-M mask2 byte", ours.matrix, refModules);
+	});
 });

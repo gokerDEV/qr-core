@@ -1,11 +1,11 @@
 /**
- * QR Matris Yönetimi
+ * QR Matrix Management
  */
 
 import type { BitMatrix } from "../types/index.js";
 
 /**
- * Matris hücre durumları (Dahili kullanım)
+ * Matrix cell states (Internal use)
  */
 const STATUS = {
 	LIGHT: 0,
@@ -20,7 +20,7 @@ export class Matrix implements BitMatrix {
 
 	constructor(size: number) {
 		this.size = size;
-		// Varsayılan olarak tüm hücreler "light" (0)
+		// All cells are "light" (0) by default
 		this.data = new Uint8Array(size * size);
 	}
 
@@ -32,7 +32,7 @@ export class Matrix implements BitMatrix {
 	}
 
 	/**
-	 * Hücrenin değerini döndürür (Sadece 0 veya 1)
+	 * Returns cell value (Only 0 or 1)
 	 */
 	public get(x: number, y: number): 0 | 1 {
 		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
@@ -48,7 +48,7 @@ export class Matrix implements BitMatrix {
 	}
 
 	/**
-	 * Hücrenin "Reserved" (ayrılmış) olup olmadığını kontrol eder
+	 * Checks whether a cell is "Reserved"
 	 */
 	public isReserved(x: number, y: number): boolean {
 		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
@@ -63,7 +63,7 @@ export class Matrix implements BitMatrix {
 	}
 
 	/**
-	 * Hücreyi ayarlar ve rezerve eder (Fonksiyonel desenler için)
+	 * Sets the cell and reserves it (for functional patterns)
 	 */
 	public setReserved(x: number, y: number, isDark: boolean): void {
 		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
@@ -77,7 +77,7 @@ export class Matrix implements BitMatrix {
 	}
 
 	/**
-	 * Sadece veri modülleri için (Ayrılmamış alanlara yazar)
+	 * Only for data modules (Writes to unreserved areas)
 	 */
 	public set(x: number, y: number, isDark: boolean): void {
 		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
@@ -93,7 +93,7 @@ export class Matrix implements BitMatrix {
 	}
 
 	/**
-	 * RFC 5.2: Matrisi satırlar halinde döndürür
+	 * RFC 5.2: Returns the matrix as rows
 	 */
 	public toRows(): ReadonlyArray<Uint8Array> {
 		const rows: Uint8Array[] = [];
@@ -104,7 +104,7 @@ export class Matrix implements BitMatrix {
 	}
 
 	/**
-	 * RFC 5.2: Matrisi paketlenmiş (MSB-first) bayt dizisi olarak döndürür
+	 * RFC 5.2: Returns matrix as a packed (MSB-first) byte array
 	 */
 	public toPacked(): Uint8Array {
 		const rowBytes = Math.ceil(this.size / 8);

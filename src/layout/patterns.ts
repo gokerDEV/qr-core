@@ -1,5 +1,5 @@
 /**
- * QR Fonksiyonel Desenlerin Yerleştirilmesi (Finder, Timing, Alignment)
+ * QR Functional Pattern Placement (Finder, Timing, Alignment)
  */
 
 import type { Matrix } from "../matrix/bit-matrix.js";
@@ -24,28 +24,29 @@ export function writeVersionInfo(matrix: Matrix, version: number): void {
 }
 
 /**
- * Tüm fonksiyonel desenleri matrise çizer
+ * Draws all functional patterns on the matrix
  */
 export function setupFunctionPatterns(matrix: Matrix, version: number): void {
 	const size = matrix.size;
 
-	// 1. Finder Patterns (Sol Üst, Sağ Üst, Sol Alt)
+	// 1. Finder Patterns (Top-Left, Top-Right, Bottom-Left)
 	drawFinder(matrix, 0, 0);
 	drawFinder(matrix, size - 7, 0);
 	drawFinder(matrix, 0, size - 7);
 
-	// 2. Separators (Finder pattern'lerin etrafındaki beyaz boşluklar)
+	// 2. Separators (White space around finder patterns)
 	drawSeparators(matrix);
 
-	// 3. Timing Patterns (6. satır ve 6. sütun boyunca bir dolu bir boş çizgiler)
+	// 3. Timing Patterns (Alternating solid and empty lines along 6th row and 6th column)
 	for (let i = 8; i < size - 8; i++) {
 		const bit = i % 2 === 0;
-		matrix.setReserved(6, i, bit); // Dikey
-		matrix.setReserved(i, 6, bit); // Yatay
+		matrix.setReserved(6, i, bit); // Vertical
+		matrix.setReserved(i, 6, bit); // Horizontal
 	}
 
-	// 4. Alignment Patterns (Versiyon >= 2, 5x5 desenler)
+	// 4. Alignment Patterns (Version >= 2, 5x5 patterns)
 	const coords = ALIGNMENT_PATTERN_POSITIONS[version] || [];
+	const numAlign = coords.length;
 	for (let i = 0; i < coords.length; i++) {
 		for (let j = 0; j < coords.length; j++) {
 			const x = coords[i];
@@ -53,17 +54,20 @@ export function setupFunctionPatterns(matrix: Matrix, version: number): void {
 			if (x === undefined || y === undefined)
 				throw new Error("Internal error: Alignment pattern coords undefined");
 
-			// Finder pattern alanlarıyla çakışmıyorsa çiz
-			if (!matrix.isReserved(x, y)) {
-				drawAlignment(matrix, x - 2, y - 2);
-			}
+			// Skip only the 3 finder-corner overlaps. Other intersections (including timing overlaps)
+			// must keep alignment patterns for versions with 3+ alignment coordinates.
+			if (i === 0 && j === 0) continue;
+			if (i === 0 && j === numAlign - 1) continue;
+			if (i === numAlign - 1 && j === 0) continue;
+
+			drawAlignment(matrix, x - 2, y - 2);
 		}
 	}
 
-	// 5. Dark Module (Sabit koyu modül)
+	// 5. Dark Module (Fixed dark module)
 	matrix.setReserved(8, size - 8, true);
 
-	// 6. Format & Version Alanlarını Rezerve Et (Daha sonra BCH ile doldurulacak)
+	// 6. Reserve Format & Version Areas (To be filled with BCH later)
 	reserveFormatAreas(matrix);
 	if (version >= 7) {
 		reserveVersionAreas(matrix);
@@ -74,8 +78,8 @@ function drawFinder(matrix: Matrix, ox: number, oy: number): void {
 	for (let y = 0; y < 7; y++) {
 		for (let x = 0; x < 7; x++) {
 			const isDark =
-				Math.max(Math.abs(x - 3), Math.abs(y - 3)) === 3 || // Dış 7x7 çerçeve
-				Math.max(Math.abs(x - 3), Math.abs(y - 3)) <= 1; // İç 3x3 kare
+				Math.max(Math.abs(x - 3), Math.abs(y - 3)) === 3 || // Outer 7x7 frame
+				Math.max(Math.abs(x - 3), Math.abs(y - 3)) <= 1; // Inner 3x3 square
 			matrix.setReserved(ox + x, oy + y, isDark);
 		}
 	}
@@ -85,8 +89,8 @@ function drawAlignment(matrix: Matrix, ox: number, oy: number): void {
 	for (let y = 0; y < 5; y++) {
 		for (let x = 0; x < 5; x++) {
 			const isDark =
-				Math.max(Math.abs(x - 2), Math.abs(y - 2)) === 2 || // 5x5 çerçeve
-				(x === 2 && y === 2); // Merkez nokta
+				Math.max(Math.abs(x - 2), Math.abs(y - 2)) === 2 || // 5x5 frame
+				(x === 2 && y === 2); // Center point
 			matrix.setReserved(ox + x, oy + y, isDark);
 		}
 	}
@@ -95,17 +99,17 @@ function drawAlignment(matrix: Matrix, ox: number, oy: number): void {
 function drawSeparators(matrix: Matrix): void {
 	const size = matrix.size;
 
-	// Sol Üst
+	// Top-Left
 	for (let i = 0; i < 8; i++) {
 		matrix.setReserved(7, i, false);
 		matrix.setReserved(i, 7, false);
 	}
-	// Sağ Üst
+	// Top-Right
 	for (let i = 0; i < 8; i++) {
 		matrix.setReserved(size - 8, i, false);
 		matrix.setReserved(size - 8 + i, 7, false);
 	}
-	// Sol Alt
+	// Bottom-Left
 	for (let i = 0; i < 8; i++) {
 		matrix.setReserved(7, size - 8 + i, false);
 		matrix.setReserved(i, size - 8, false);
@@ -114,7 +118,7 @@ function drawSeparators(matrix: Matrix): void {
 
 function reserveFormatAreas(matrix: Matrix): void {
 	const size = matrix.size;
-	// Format bitleri alanlarını rezerve et (Timing çizgisi hariç)
+	// Reserve format bit areas (Excluding timing line)
 	for (let i = 0; i <= 8; i++) {
 		if (i !== 6) matrix.setReserved(i, 8, false);
 		if (i !== 6) matrix.setReserved(8, i, false);
@@ -125,7 +129,7 @@ function reserveFormatAreas(matrix: Matrix): void {
 
 function reserveVersionAreas(matrix: Matrix): void {
 	const size = matrix.size;
-	// Versiyon >= 7 için 3x6 alanlar
+	// 3x6 areas for version >= 7
 	for (let i = 0; i < 6; i++) {
 		for (let j = 0; j < 3; j++) {
 			matrix.setReserved(size - 11 + j, i, false);
