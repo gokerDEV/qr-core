@@ -1,9 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import { PNG } from "pngjs";
 import jsQR from "jsqr";
+import { PNG } from "pngjs";
 import { describe, expect, it } from "vitest";
 import { encode } from "../../src/api/index";
+
 function renderToImageData(
 	matrix: { size: number; get(x: number, y: number): 0 | 1 },
 	quietZone = 4,
